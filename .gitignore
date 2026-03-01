@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# uploaded files
+/public/uploads/
+
+# clerk configuration (can include secrets)
+/.clerk/
