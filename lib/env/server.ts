@@ -12,8 +12,12 @@ export const env = createEnv({
         CLERK_WEBHOOK_SECRET: z.string(),
         CLERK_SECRET_KEY: z.string(),
         ENCRYPTION_KEY: z.string(),
-        NEXT_PUBLIC_APP_URL: z.string(),
         NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
     },
-    experimental__runtimeEnv: process.env,
+    shared: {
+        NEXT_PUBLIC_APP_URL: z.string(),
+    },
+    experimental__runtimeEnv: {
+        NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    },
 })

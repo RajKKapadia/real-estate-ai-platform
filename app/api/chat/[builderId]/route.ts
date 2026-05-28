@@ -1,9 +1,8 @@
 import { run } from "@openai/agents";
 import { getBuilderById } from "@/lib/db/queries/builders-detail";
 import { getConnectionByType } from "@/lib/db/queries/connections";
-import { getOrCreateSession } from "@/lib/db/queries/sessions";
 import { realEstateAgent } from "@/lib/ai/agent";
-import { DatabaseSession } from "@/lib/ai/agent-sessions";
+import { CustomSession } from "@/lib/ai/agent-sessions";
 import type { UserContext } from "@/lib/user.types";
 
 export async function POST(
@@ -42,19 +41,20 @@ export async function POST(
     sessionId: string;
   };
 
-  const session = await getOrCreateSession({
+  const userId = `conv-website-${externalId}`;
+  const dbSession = new CustomSession({
     builderId,
     platform: "website",
-    externalId,
+    userId,
   });
+  const sessionId = await dbSession.getSessionId();
 
   const context: UserContext = {
     builderId,
-    userId: `conv-website-${externalId}`,
+    userId,
     platform: "website",
+    sessionId,
   };
-
-  const dbSession = new DatabaseSession(session.id);
 
   const latestMessage = messages[messages.length - 1];
   const latestText = latestMessage.parts

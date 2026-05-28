@@ -10,7 +10,6 @@ import {
 } from "@/lib/validators";
 import { encrypt } from "@/lib/encryption";
 import { env } from "@/lib/env/server";
-import { z } from "zod";
 
 export async function upsertWebsiteConnectionAction(
   builderId: string,
@@ -53,7 +52,7 @@ export async function upsertWhatsAppConnectionAction(
   });
 
   if (!parsed.success) {
-    return { error: z.treeifyError(parsed.error) };
+    return { error: parsed.error.flatten().fieldErrors };
   }
 
   const appUrl = env.NEXT_PUBLIC_APP_URL;

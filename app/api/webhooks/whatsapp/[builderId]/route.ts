@@ -58,11 +58,13 @@ export async function POST(
   const message = parseWebhookPayload(body);
 
   if (message) {
+    const jobId = `${builderId}-${message.messageId.replaceAll(":", "-")}`;
+
     await whatsappQueue.add("process-message", {
       builderId,
       message,
     }, {
-      jobId: `${builderId}:${message.messageId}`,
+      jobId,
     });
   }
 

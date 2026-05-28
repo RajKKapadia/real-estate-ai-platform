@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import { startWhatsAppWorker } from "../lib/queue/whatsapp-worker";
 
 startWhatsAppWorker();
